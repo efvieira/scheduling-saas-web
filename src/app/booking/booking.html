@@ -1,0 +1,126 @@
+@if (loadError(); as message) {
+  <main class="shell"><p class="notice">{{ message }}</p></main>
+} @else if (page(); as p) {
+  <main class="shell">
+    <header class="brand">
+      <h1>{{ p.name }}</h1>
+      <p>Escolha o serviço, a pessoa que vai te atender e o melhor horário.</p>
+    </header>
+
+    @if (booked(); as b) {
+      <section class="done" aria-live="polite">
+        @if (b.status === 'AWAITING_PAYMENT') {
+          <h2>Horário reservado</h2>
+          <p>Pague o Pix abaixo para confirmar. Enquanto isso, o horário fica guardado para você.</p>
+          <div class="pix">
+            <code>{{ b.pixCopiaECola }}</code>
+            <button type="button" class="primary" (click)="copyPix(b.pixCopiaECola!)">
+              {{ copied() ? 'Código copiado' : 'Copiar código Pix' }}
+            </button>
+          </div>
+        } @else {
+          <h2>Tudo certo, {{ name.split(' ')[0] }}!</h2>
+          <p>Você vai receber a confirmação no WhatsApp e um lembrete um dia antes.</p>
+        }
+        <dl class="ticket">
+          <dt>Serviço</dt><dd>{{ service()?.name }}</dd>
+          <dt>Com</dt><dd>{{ professional()?.name }}</dd>
+          <dt>Quando</dt><dd>{{ longDate(b.startAt) }}, {{ time(b.startAt) }}</dd>
+          <dt>Valor</dt><dd>{{ brl(b.price) }}</dd>
+        </dl>
+        <button type="button" class="ghost" (click)="startOver()">Agendar outro horário</button>
+      </section>
+    } @else {
+      <ol class="steps">
+        <li>
+          <h2>Serviço</h2>
+          <div class="options">
+            @for (s of p.services; track s.id) {
+              <button type="button" class="option" [class.selected]="serviceId() === s.id"
+                      [attr.aria-pressed]="serviceId() === s.id" (click)="serviceId.set(s.id)">
+                <span class="option-name">{{ s.name }}</span>
+                <span class="option-meta">{{ s.durationMinutes }} min, {{ brl(s.price) }}</span>
+                @if (s.prepaid) {
+                  <span class="option-note">Pagamento antecipado via Pix</span>
+                }
+              </button>
+            }
+          </div>
+        </li>
+
+        <li>
+          <h2>Profissional</h2>
+          <div class="options compact">
+            @for (pro of p.professionals; track pro.id) {
+              <button type="button" class="option" [class.selected]="professionalId() === pro.id"
+                      [attr.aria-pressed]="professionalId() === pro.id" (click)="professionalId.set(pro.id)">
+                <span class="avatar" aria-hidden="true">{{ pro.name[0] }}</span>
+                <span class="option-name">{{ pro.name }}</span>
+              </button>
+            }
+          </div>
+        </li>
+
+        <li>
+          <h2>Dia e horário</h2>
+          <div class="days" role="listbox" aria-label="Dia">
+            @for (d of days; track d.iso) {
+              <button type="button" role="option" class="day" [class.selected]="date() === d.iso"
+                      [attr.aria-selected]="date() === d.iso" [attr.aria-label]="d.weekday + ', ' + d.day + ' de ' + d.month"
+                      (click)="date.set(d.iso)">
+                <span class="weekday">{{ d.weekday }}</span>
+                <span class="number">{{ d.day }}</span>
+                <span class="month">{{ d.month }}</span>
+              </button>
+            }
+          </div>
+
+          @if (!serviceId() || !professionalId()) {
+            <p class="hint">Escolha o serviço e a profissional para ver os horários livres.</p>
+          } @else if (slots() === null) {
+            <p class="hint">Buscando horários…</p>
+          } @else if (slots()!.length === 0) {
+            <p class="hint">Sem horários livres neste dia. Tente outra data.</p>
+          } @else {
+            <div class="slots">
+              @for (s of slots(); track s) {
+                <button type="button" class="slot" [class.selected]="slot() === s" (click)="slot.set(s)">
+                  {{ time(s) }}
+                </button>
+              }
+            </div>
+          }
+        </li>
+
+        <li>
+          <h2>Seus dados</h2>
+          <form class="contact" (ngSubmit)="confirm()" #form="ngForm">
+            <label>
+              Nome
+              <input name="name" [(ngModel)]="name" required autocomplete="name" />
+            </label>
+            <label>
+              WhatsApp com DDD
+              <input name="phone" [(ngModel)]="phone" required inputmode="tel" autocomplete="tel"
+                     placeholder="(11) 98888-7777" />
+            </label>
+            @if (bookError(); as message) {
+              <p class="error" role="alert">{{ message }}</p>
+            }
+            <button type="submit" class="primary" [disabled]="!slot() || !form.valid || sending()">
+              @if (slot(); as s) {
+                Agendar {{ service()?.name?.toLowerCase() }} às {{ time(s) }}
+              } @else {
+                Escolha um horário
+              }
+            </button>
+          </form>
+        </li>
+      </ol>
+    }
+
+    <footer class="foot">
+      <a href="/painel/entrar">Sou do {{ p.name }}</a>
+    </footer>
+  </main>
+}

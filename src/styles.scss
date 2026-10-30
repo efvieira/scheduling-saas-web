@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap');
+
+:root {
+  --ink: #2b1a2f;
+  --ink-soft: #6b5870;
+  --paper: #f7f3f8;
+  --surface: #ffffff;
+  --accent: #8c3a6c;
+  --accent-ink: #ffffff;
+  --sand: #eadcc9;
+  --sage: #4f7a61;
+  --line: #e2d8e5;
+  --danger: #a3302f;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.5rem;
+  font-weight: 700;
+}
+
+.primary:disabled {
+  background: var(--line);
+  color: var(--ink-soft);
+  cursor: not-allowed;
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.7rem 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

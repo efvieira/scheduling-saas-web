@@ -1,0 +1,170 @@
+.agenda {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    color: var(--ink-soft);
+  }
+}
+
+.dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2rem 0 0.5rem;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-align: center;
+    text-transform: none;
+  }
+}
+
+.summary,
+.muted {
+  color: var(--ink-soft);
+}
+
+.error {
+  color: var(--danger);
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  border-left: 2px solid var(--line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 1rem;
+  padding: 1rem 0 1rem 1rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 1.35rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  & + & {
+    border-top: 1px solid var(--line);
+  }
+}
+
+.hour {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: grid;
+
+  span {
+    font-family: var(--body);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+  }
+}
+
+.body p {
+  margin: 0;
+}
+
+.who {
+  font-weight: 700;
+}
+
+.what {
+  color: var(--ink-soft);
+}
+
+.phone {
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.side {
+  display: grid;
+  justify-items: end;
+  gap: 0.5rem;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  background: var(--sand);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0.35rem;
+
+  button {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+.status-confirmed::before,
+.status-completed::before {
+  background: var(--sage);
+}
+
+.status-confirmed .badge,
+.status-completed .badge {
+  background: var(--sage);
+  color: var(--paper);
+}
+
+.status-cancelled,
+.status-no_show {
+  opacity: 0.55;
+
+  &::before {
+    background: var(--line);
+  }
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 3.8rem 1fr;
+  }
+
+  .side {
+    grid-column: 2;
+    justify-items: start;
+  }
+
+  .actions {
+    justify-content: start;
+  }
+}
