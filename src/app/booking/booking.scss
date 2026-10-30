@@ -1,0 +1,270 @@
+.shell {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+}
+
+.brand {
+  margin-bottom: 2.5rem;
+
+  h1 {
+    font-size: clamp(2.4rem, 8vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: var(--ink-soft);
+    margin: 0.5rem 0 0;
+    max-width: 32rem;
+  }
+}
+
+.steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2.25rem;
+
+  > li {
+    counter-increment: step;
+    // sem isso a coluna da grade cresce até a largura da faixa de dias e a página rola na horizontal
+    min-width: 0;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 0.9rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+
+    &::before {
+      content: counter(step);
+      font-weight: 700;
+      color: var(--accent);
+    }
+  }
+}
+
+.options {
+  display: grid;
+  gap: 0.6rem;
+
+  &.compact {
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  }
+}
+
+.option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.75rem;
+  align-items: center;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+
+  .option-name {
+    font-weight: 700;
+    grid-column: 1 / -1;
+  }
+
+  .avatar + .option-name {
+    grid-column: 2;
+  }
+
+  .option-meta,
+  .option-note {
+    grid-column: 1 / -1;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+
+  .option-note {
+    color: var(--accent);
+  }
+
+  &.selected {
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+}
+
+.avatar {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--sand);
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 700;
+}
+
+/* A faixa de dias é o elemento marcante: números grandes, como uma agenda de papel. */
+.days {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+  margin: 0 -1rem 1rem;
+  padding-inline: 1rem;
+}
+
+.day {
+  scroll-snap-align: start;
+  flex: 0 0 4.4rem;
+  display: grid;
+  justify-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 16px;
+  padding: 0.6rem 0 0.7rem;
+  color: var(--ink-soft);
+
+  .weekday,
+  .month {
+    font-size: 0.82rem;
+  }
+
+  .number {
+    font-family: var(--display);
+    font-size: 2.3rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    margin: 0.15rem 0;
+  }
+
+  &.selected {
+    background: var(--ink);
+    color: var(--sand);
+
+    .number {
+      color: var(--paper);
+    }
+  }
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.2rem, 1fr));
+  gap: 0.5rem;
+}
+
+.slot {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 0;
+  font-variant-numeric: tabular-nums;
+
+  &.selected {
+    background: var(--sand);
+    border-color: var(--ink);
+    font-weight: 700;
+  }
+}
+
+.hint {
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.contact {
+  display: grid;
+  gap: 1rem;
+
+  label {
+    display: grid;
+    gap: 0.3rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  input {
+    font-weight: 400;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .primary {
+    justify-self: start;
+  }
+}
+
+.error {
+  color: var(--danger);
+  margin: 0;
+}
+
+.done {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 1.75rem;
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+}
+
+.pix {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+
+  code {
+    display: block;
+    word-break: break-all;
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+.ticket {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.25rem;
+  margin: 0.5rem 0;
+
+  dt {
+    color: var(--ink-soft);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+.notice {
+  color: var(--ink-soft);
+}
+
+.foot {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+
+  a {
+    color: var(--ink-soft);
+  }
+}

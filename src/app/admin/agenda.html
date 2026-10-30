@@ -1,0 +1,55 @@
+<main class="agenda">
+  <header class="top">
+    <div>
+      <h1>{{ session.user()?.businessName }}</h1>
+      <p>Olá, {{ session.user()?.name }}</p>
+    </div>
+    <button type="button" class="ghost" (click)="logout()">Sair</button>
+  </header>
+
+  <nav class="dates" aria-label="Trocar de dia">
+    <button type="button" class="ghost" (click)="shift(-1)" aria-label="Dia anterior">Anterior</button>
+    <h2>{{ longDate(date() + 'T12:00:00') }}</h2>
+    <button type="button" class="ghost" (click)="shift(1)" aria-label="Próximo dia">Próximo</button>
+  </nav>
+
+  @if (items(); as list) {
+    <p class="summary">
+      {{ active() === 1 ? '1 atendimento' : active() + ' atendimentos' }} no dia. {{ brl(revenue()) }} já recebidos.
+    </p>
+  }
+
+  @if (error(); as message) {
+    <p class="error" role="alert">{{ message }}</p>
+  }
+
+  @if (items() === null && !error()) {
+    <p class="muted">Carregando a agenda…</p>
+  } @else if (items()?.length === 0) {
+    <p class="muted">Nenhum horário marcado neste dia. Compartilhe o link de agendamento com seus clientes:
+      <a [href]="'/b/' + session.user()?.businessSlug">/b/{{ session.user()?.businessSlug }}</a></p>
+  } @else {
+    <ul class="timeline">
+      @for (item of items(); track item.id) {
+        <li [class]="'row status-' + item.status.toLowerCase()">
+          <time class="hour">{{ time(item.startAt) }}<span>{{ time(item.endAt) }}</span></time>
+          <div class="body">
+            <p class="who">{{ item.customerName }}</p>
+            <p class="what">{{ item.service }} com {{ item.professional }}, {{ brl(item.price) }}</p>
+            <a class="phone" [href]="'https://wa.me/' + item.customerPhone" target="_blank" rel="noopener">
+              WhatsApp {{ item.customerPhone }}
+            </a>
+          </div>
+          <div class="side">
+            <span class="badge">{{ label[item.status] }}</span>
+            <div class="actions">
+              @for (action of actions(item.status); track action.status) {
+                <button type="button" (click)="change(item, action.status)">{{ action.label }}</button>
+              }
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</main>
